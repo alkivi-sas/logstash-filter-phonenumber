@@ -37,7 +37,7 @@ class LogStash::Filters::Phonenumber < LogStash::Filters::Base
     source = event.get(@source)
     if source
         number = GlobalPhone.parse(source)
-        if number.valid
+        if number.valid?
           if number.territory.name
             event.set(@destination, number.territory.name)
           end
