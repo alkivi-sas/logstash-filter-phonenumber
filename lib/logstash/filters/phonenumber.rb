@@ -1,8 +1,6 @@
 # encoding: utf-8
 require "logstash/filters/base"
-require 'global_phone'
-
-GlobalPhone.db_path = '/usr/share/logstash/global_phone.json'
+require 'phonelib'
 
 # This  filter will replace the contents of the default
 # message field with whatever you specify in the configuration.
@@ -23,12 +21,13 @@ class LogStash::Filters::Phonenumber < LogStash::Filters::Base
 
   # Replace the message with this value.
   config :source, :validate => :string
-  config :destination, :validate => :string
+  config :destination_country, :validate => :string
+  config :destination_type, :validate => :string
 
 
   public
   def register
-    # Add instance variables
+    Phonelib.default_country = "FR"
   end # def register
 
   public
@@ -36,14 +35,16 @@ class LogStash::Filters::Phonenumber < LogStash::Filters::Base
 
     source = event.get(@source)
     if source
-        number = GlobalPhone.parse(source)
-        if number.valid?
-          if number.territory.name
-            event.set(@destination, number.territory.name)
-          end
+      if Phonelib.valid?(source)
+        number = Phonelib.parse(source)
+        if number.country
+          event.set(@destination_country, number.country)
         end
+        if number.human_type
+          event.set(@destination_type, number.human_type)
+        end
+      end
     end
-
 
     # filter_matched should go in the last line of our successful code
     filter_matched(event)

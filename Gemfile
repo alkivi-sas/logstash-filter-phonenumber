@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
-gem 'global_phone'
+gem 'phonelib'
 gemspec
 
