@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-phonenumber'
-  s.version       = '0.1.0'
+  s.version       = '1.0.0'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'Parse phonenumber to extract country and more.'
   s.homepage      = 'https://github.com/alkivi-sas/logstash-filter-phonenumber'
@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
+  s.add_runtime_dependency "phonelib"
   s.add_development_dependency 'logstash-devutils'
 end
